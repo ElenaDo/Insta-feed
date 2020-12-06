@@ -1,6 +1,6 @@
 <template>
-  <div>
-    <Card />
+  <div class="insta-feed">
+    <Card v-for="post in recentFeeds" :key="post.id" :post="post"/>
   </div>
 </template>
 
@@ -18,3 +18,13 @@ export default {
   },
 };
 </script>
+
+<style>
+.insta-feed {
+  display: flex;
+  align-items: flex-start;
+  justify-content: center;
+  flex-wrap: wrap;
+  height: 300px;
+}
+</style>
