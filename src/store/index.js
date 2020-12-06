@@ -6,7 +6,10 @@ Vue.use(Vuex);
 
 export default new Vuex.Store({
   state: {
-    recentFeeds: demoData.graphql.user.edge_owner_to_timeline_media.edges,
+    recentFeeds: [
+      ...demoData.graphql.user.edge_owner_to_timeline_media.edges,
+      ...demoData.graphql.user.edge_felix_video_timeline.edges,
+    ],
   },
   mutations: {
   },
