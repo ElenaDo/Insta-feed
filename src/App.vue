@@ -1,13 +1,16 @@
 <template>
   <div id="app">
+    <Instagram />
   </div>
 </template>
 
 <script>
+import Instagram from './components/Instagram.vue';
 
 export default {
   name: 'App',
   components: {
+    Instagram,
   },
 };
 </script>
