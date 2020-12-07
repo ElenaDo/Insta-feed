@@ -1,11 +1,14 @@
 <template>
   <div>
-    <select  v-model="selected">
-      <option
-        v-for="option in options" :value="option.value" :key="option.value">
-        {{option.text}}
-      </option>
-    </select>
+    <div class="filter">
+      <span>Show</span>
+      <select v-model="selected">
+        <option
+          v-for="option in options" :value="option.value" :key="option.value">
+          {{option.text}}
+        </option>
+      </select>
+    </div>
     <div class="insta-feed">
       <Card v-for="post in filtered" :key="post.id" :post="post"/>
     </div>
@@ -18,6 +21,7 @@ import Card from './Card.vue';
 
 export default {
   name: 'Instagam',
+  props: { numberOfFeeds: Number, account: String },
   components: {
     Card,
   },
@@ -44,10 +48,17 @@ export default {
 </script>
 
 <style>
+.filter {
+  display: flex;
+  justify-content: flex-end;
+}
+.filter span {
+  margin: .5em 0;
+  padding: .5em 0;
+}
 .insta-feed {
   display: flex;
   align-items: flex-start;
-  justify-content: center;
   flex-wrap: wrap;
   height: 300px;
 }
