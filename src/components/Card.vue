@@ -1,22 +1,22 @@
 <template>
   <div class="outer">
   <div
-    v-if="!post.node.is_video"
+    v-if="!post.is_video"
     class="card insta_img"
-    :style="[visible && { backgroundImage: `url(${post.node.display_url})`}]"
+    :style="[visible && { backgroundImage: `url(${post.display_url})`}]"
   >
-    <span class="likes">{{post.node.edge_liked_by.count}} Like(s)</span>
+    <span class="likes">{{post.edge_liked_by.count}} Like(s)</span>
   </div>
   <div v-else class="card video">
     <video controls>
       <source
         v-if="visible"
-        :src="post.node.video_url"
-        :width="post.node.dimensions.width"
-        :height="post.node.dimensions.height"
+        :src="post.video_url"
+        :width="post.dimensions.width"
+        :height="post.dimensions.height"
       >
     </video>
-    <div class="likes">{{post.node.video_view_count}} View(s)</div>
+    <div class="likes">{{post.video_view_count}} View(s)</div>
   </div>
   </div>
 </template>

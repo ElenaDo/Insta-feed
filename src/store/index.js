@@ -14,7 +14,7 @@ export default new Vuex.Store({
       const selectedAccountFeed = state.recentFeeds[state.selectedAccount];
       if (!selectedAccountFeed) return [];
       return selectedAccountFeed
-        .sort((a, b) => b.node.taken_at_timestamp - a.node.taken_at_timestamp);
+        .sort((a, b) => b.taken_at_timestamp - a.taken_at_timestamp);
     },
   },
   mutations: {
@@ -44,7 +44,7 @@ export default new Vuex.Store({
       const data = [
         ...result.graphql.user.edge_owner_to_timeline_media.edges,
         ...result.graphql.user.edge_felix_video_timeline.edges,
-      ];
+      ].map((item) => item.node);
       commit('setAccountFeed', { data });
     },
   },
