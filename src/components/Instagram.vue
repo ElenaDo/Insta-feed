@@ -1,6 +1,14 @@
 <template>
-  <div class="insta-feed">
-    <Card v-for="post in sortedRecentFeeds" :key="post.id" :post="post"/>
+  <div>
+    <select  v-model="selected">
+      <option
+        v-for="option in options" :value="option.value" :key="option.value">
+        {{option.text}}
+      </option>
+    </select>
+    <div class="insta-feed">
+      <Card v-for="post in filtered" :key="post.id" :post="post"/>
+    </div>
   </div>
 </template>
 
@@ -13,8 +21,24 @@ export default {
   components: {
     Card,
   },
+  data: () => ({
+    selected: 'all',
+    options: [
+      { text: 'all', value: 'all' },
+      { text: 'photo', value: 'photo' },
+      { text: 'video', value: 'video' },
+    ],
+  }),
   computed: {
     ...mapGetters(['sortedRecentFeeds']),
+    filtered() {
+      const { selected } = this;
+      if (selected === 'all') {
+        return this.sortedRecentFeeds;
+      }
+      return [...this.sortedRecentFeeds]
+        .filter((item) => (selected === 'video' ? item.node.is_video : !item.node.is_video));
+    },
   },
 };
 </script>
