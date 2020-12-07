@@ -60,9 +60,8 @@ export default {
   padding: .5em 0;
 }
 .insta-feed {
-  display: flex;
-  align-items: flex-start;
-  flex-wrap: wrap;
-  height: 300px;
+  display: grid;
+  grid-template-columns: repeat(3, 1fr);
+  grid-gap: 10px;
 }
 </style>

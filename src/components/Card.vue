@@ -1,5 +1,5 @@
 <template>
-  <div>
+  <div class="outer">
   <div
     v-if="!post.node.is_video"
     class="card insta_img"
@@ -47,14 +47,19 @@ export default {
 </script>
 
 <style>
+.outer{
+  padding-top: 100%;
+  position: relative;
+}
 .card {
+  position: absolute;
+  top: 0;
   display: flex;
   flex-direction: column;
   justify-content: flex-end;
   overflow: hidden;
-  height: 240px;
-  width: 240px;
-  margin: .5em;
+  height: 100%;
+  width: 100%;
 }
 .insta_img {
   background-position: 50% 50%;
