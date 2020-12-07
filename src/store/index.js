@@ -3,7 +3,7 @@ import Vuex from 'vuex';
 
 Vue.use(Vuex);
 
-const storedFeeds = sessionStorage.getItem('store.recentFeeds');
+const storedFeeds = localStorage.getItem('store.recentFeeds');
 
 const recentFeeds = storedFeeds ? JSON.parse(storedFeeds) : {};
 
@@ -79,7 +79,7 @@ const store = new Vuex.Store({
 
 store.subscribe((mutation, state) => {
   if (mutation.type === 'setAccountFeed') {
-    sessionStorage.setItem('store.recentFeeds', JSON.stringify(state.recentFeeds));
+    localStorage.setItem('store.recentFeeds', JSON.stringify(state.recentFeeds));
   }
 });
 
