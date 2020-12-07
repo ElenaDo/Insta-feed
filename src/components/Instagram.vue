@@ -9,7 +9,8 @@
         </option>
       </select>
     </div>
-    <h4 v-show="!limited.length">No items to show..</h4>
+    <h4 v-show="loading">Loading..</h4>
+    <h4 v-show="!limited.length && !loading">No items to show..</h4>
     <div class="insta-feed">
       <Card v-for="post in limited" :key="post.id" :post="post"/>
     </div>
@@ -17,7 +18,7 @@
 </template>
 
 <script>
-import { mapGetters } from 'vuex';
+import { mapState, mapGetters } from 'vuex';
 import Card from './Card.vue';
 
 export default {
@@ -36,6 +37,7 @@ export default {
   }),
   computed: {
     ...mapGetters(['sortedRecentFeeds']),
+    ...mapState(['loading']),
     filtered() {
       const { selected } = this;
       if (selected === 'all') {

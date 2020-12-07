@@ -5,6 +5,7 @@ Vue.use(Vuex);
 
 export default new Vuex.Store({
   state: {
+    loading: false,
     selectedAccount: '',
     recentFeeds: {},
   },
@@ -24,16 +25,24 @@ export default new Vuex.Store({
     setAccountFeed(state, { data }) {
       state.recentFeeds = { ...state.recentFeeds, [state.selectedAccount]: data };
     },
+    loading(state) {
+      state.loading = true;
+    },
+    noLoading(state) {
+      state.loading = false;
+    },
   },
   actions: {
-    async request(context, { account }) {
+    async request({ commit }, { account }) {
       let result;
+      commit('loading');
       try {
         const response = await fetch(`https://www.instagram.com/${account}/?__a=1`);
         result = await response.json();
       } catch (err) {
         console.log(err);
       }
+      commit('noLoading');
       return result;
     },
     async fetchFeed({ commit, dispatch, state }, { account }) {
