@@ -2,6 +2,7 @@
   <div>
   <div v-if="!post.node.is_video" class="card insta_img"
     :style="{ backgroundImage: `url(${post.node.display_url})`}">
+    <span class="likes">{{post.node.edge_liked_by.count}} Likes</span>
   </div>
   <div v-else class="card video">
     <video controls>
@@ -20,6 +21,9 @@ export default {
 
 <style>
 .card {
+  display: flex;
+  align-items: flex-end;
+  justify-content: center;
   overflow: hidden;
   height: 240px;
   width: 240px;
@@ -33,5 +37,12 @@ export default {
 .card video {
   width: 100%;
   height: 100%;
+}
+.likes {
+  color: white;
+  width: 100%;
+  padding: 0.3em;
+  font-weight: bolder;
+  background-color: rgba(0, 0, 0, 0.5);
 }
 </style>
