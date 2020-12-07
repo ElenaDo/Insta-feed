@@ -36,8 +36,9 @@ export default new Vuex.Store({
       }
       return result;
     },
-    async fetchFeed({ commit, dispatch }, { account }) {
+    async fetchFeed({ commit, dispatch, state }, { account }) {
       commit('setSelectedAccount', { account });
+      if (!account || state.recentFeeds[account]) return;
       const result = await dispatch('request', { account });
       if (!result) return;
       const data = [
@@ -45,7 +46,6 @@ export default new Vuex.Store({
         ...result.graphql.user.edge_felix_video_timeline.edges,
       ];
       commit('setAccountFeed', { data });
-      console.log(result);
     },
   },
   modules: {

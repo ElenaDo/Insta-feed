@@ -49,9 +49,7 @@ export default {
   },
   watch: {
     account(val) {
-      if (val) {
-        this.$store.dispatch('fetchFeed', { account: val });
-      }
+      this.$store.dispatch('fetchFeed', { account: val });
     },
   },
 };
