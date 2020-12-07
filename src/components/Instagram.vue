@@ -10,7 +10,7 @@
       </select>
     </div>
     <div class="insta-feed">
-      <Card v-for="post in filtered" :key="post.id" :post="post"/>
+      <Card v-for="post in limited" :key="post.id" :post="post"/>
     </div>
   </div>
 </template>
@@ -42,6 +42,9 @@ export default {
       }
       return [...this.sortedRecentFeeds]
         .filter((item) => (selected === 'video' ? item.node.is_video : !item.node.is_video));
+    },
+    limited() {
+      return this.filtered.slice(0, this.numberOfFeeds);
     },
   },
 };
