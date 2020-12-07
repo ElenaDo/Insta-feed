@@ -1,12 +1,16 @@
 <template>
   <div>
-  <div v-if="!post.node.is_video" class="card insta_img"
-    :style="{ backgroundImage: `url(${post.node.display_url})`}">
+  <div
+    v-if="!post.node.is_video"
+    class="card insta_img"
+    :style="[visible && { backgroundImage: `url(${post.node.display_url})`}]"
+  >
     <span class="likes">{{post.node.edge_liked_by.count}} Like(s)</span>
   </div>
   <div v-else class="card video">
     <video controls>
       <source
+        v-if="visible"
         :src="post.node.video_url"
         :width="post.node.dimensions.width"
         :height="post.node.dimensions.height"
@@ -21,6 +25,24 @@
 export default {
   props: { post: Object },
   name: 'Card',
+  data: () => ({
+    visible: false,
+    observer: null,
+    intersected: false,
+  }),
+  mounted() {
+    this.observer = new IntersectionObserver((entries) => {
+      const [entry] = entries;
+      if (entry.isIntersecting) {
+        this.visible = true;
+        this.observer.disconnect();
+      }
+    });
+    this.observer.observe(this.$el);
+  },
+  destroyed() {
+    this.observer.disconnect();
+  },
 };
 </script>
 
@@ -50,5 +72,4 @@ export default {
   font-weight: bolder;
   background-color: rgba(0, 0, 0, 0.5);
 }
-
 </style>
