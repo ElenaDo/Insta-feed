@@ -36,8 +36,9 @@ export default {
   },
   data: () => ({
     numberOfFeeds: 15,
-    account: 'artnightevents',
+    account: '',
     options: [
+      { text: 'Please select..', value: '' },
       { text: 'artnightevents', value: 'artnightevents' },
       { text: 'shakenightevents', value: 'shakenightevents' },
       { text: 'plantnightevents', value: 'plantnightevents' },

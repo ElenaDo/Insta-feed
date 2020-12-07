@@ -47,6 +47,13 @@ export default {
       return this.filtered.slice(0, this.numberOfFeeds);
     },
   },
+  watch: {
+    account(val) {
+      if (val) {
+        this.$store.dispatch('fetchFeed', { account: val });
+      }
+    },
+  },
 };
 </script>
 

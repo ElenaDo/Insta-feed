@@ -17,6 +17,9 @@ export default new Vuex.Store({
   mutations: {
   },
   actions: {
+    async fetchFeed(context, { account }) {
+      console.log(account);
+    },
   },
   modules: {
   },
