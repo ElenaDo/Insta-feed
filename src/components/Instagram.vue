@@ -9,6 +9,7 @@
         </option>
       </select>
     </div>
+    <h4 v-show="!limited.length">No items to show..</h4>
     <div class="insta-feed">
       <Card v-for="post in limited" :key="post.id" :post="post"/>
     </div>
