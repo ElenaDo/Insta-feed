@@ -5,20 +5,47 @@ Vue.use(Vuex);
 
 export default new Vuex.Store({
   state: {
-    recentFeeds: [],
+    selectedAccount: '',
+    recentFeeds: {},
   },
   getters: {
     sortedRecentFeeds(state) {
       // show newest posts first
-      return state.recentFeeds
+      const selectedAccountFeed = state.recentFeeds[state.selectedAccount];
+      if (!selectedAccountFeed) return [];
+      return selectedAccountFeed
         .sort((a, b) => b.node.taken_at_timestamp - a.node.taken_at_timestamp);
     },
   },
   mutations: {
+    setSelectedAccount(state, { account }) {
+      state.selectedAccount = account;
+    },
+    setAccountFeed(state, { data }) {
+      state.recentFeeds = { ...state.recentFeeds, [state.selectedAccount]: data };
+    },
   },
   actions: {
-    async fetchFeed(context, { account }) {
-      console.log(account);
+    async request(context, { account }) {
+      let result;
+      try {
+        const response = await fetch(`https://www.instagram.com/${account}/?__a=1`);
+        result = await response.json();
+      } catch (err) {
+        console.log(err);
+      }
+      return result;
+    },
+    async fetchFeed({ commit, dispatch }, { account }) {
+      commit('setSelectedAccount', { account });
+      const result = await dispatch('request', { account });
+      if (!result) return;
+      const data = [
+        ...result.graphql.user.edge_owner_to_timeline_media.edges,
+        ...result.graphql.user.edge_felix_video_timeline.edges,
+      ];
+      commit('setAccountFeed', { data });
+      console.log(result);
     },
   },
   modules: {
