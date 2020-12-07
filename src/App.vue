@@ -15,7 +15,7 @@
           <span>Number of feeds</span>
           <select v-model="numberOfFeeds">
             <option
-              v-for="number in 12" :value="number" :key="number">
+              v-for="number in 15" :value="number" :key="number">
               {{number}}
             </option>
           </select>
@@ -35,7 +35,7 @@ export default {
     Instagram,
   },
   data: () => ({
-    numberOfFeeds: 12,
+    numberOfFeeds: 15,
     account: 'artnightevents',
     options: [
       { text: 'artnightevents', value: 'artnightevents' },
@@ -62,6 +62,12 @@ export default {
 .select-panel {
   display: flex;
   justify-content: space-between;
+}
+@media (max-width: 700px) {
+  .select-panel{
+    flex-direction: column;
+    align-items: flex-end;
+  }
 }
 select {
   font-size: 1.1em;
