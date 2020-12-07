@@ -1,11 +1,11 @@
 <template>
   <div class="insta-feed">
-    <Card v-for="post in recentFeeds" :key="post.id" :post="post"/>
+    <Card v-for="post in sortedRecentFeeds" :key="post.id" :post="post"/>
   </div>
 </template>
 
 <script>
-import { mapState } from 'vuex';
+import { mapGetters } from 'vuex';
 import Card from './Card.vue';
 
 export default {
@@ -14,7 +14,7 @@ export default {
     Card,
   },
   computed: {
-    ...mapState(['recentFeeds']),
+    ...mapGetters(['sortedRecentFeeds']),
   },
 };
 </script>
