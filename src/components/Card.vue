@@ -2,12 +2,17 @@
   <div>
   <div v-if="!post.node.is_video" class="card insta_img"
     :style="{ backgroundImage: `url(${post.node.display_url})`}">
-    <span class="likes">{{post.node.edge_liked_by.count}} Likes</span>
+    <span class="likes">{{post.node.edge_liked_by.count}} Like(s)</span>
   </div>
   <div v-else class="card video">
     <video controls>
-      <source :src="post.node.video_url">
+      <source
+        :src="post.node.video_url"
+        :width="post.node.dimensions.width"
+        :height="post.node.dimensions.height"
+      >
     </video>
+    <div class="likes">{{post.node.video_view_count}} View(s)</div>
   </div>
   </div>
 </template>
@@ -22,8 +27,8 @@ export default {
 <style>
 .card {
   display: flex;
-  align-items: flex-end;
-  justify-content: center;
+  flex-direction: column;
+  justify-content: flex-end;
   overflow: hidden;
   height: 240px;
   width: 240px;
@@ -45,4 +50,5 @@ export default {
   font-weight: bolder;
   background-color: rgba(0, 0, 0, 0.5);
 }
+
 </style>
