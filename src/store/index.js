@@ -3,11 +3,15 @@ import Vuex from 'vuex';
 
 Vue.use(Vuex);
 
-export default new Vuex.Store({
+const storedFeeds = sessionStorage.getItem('store.recentFeeds');
+
+const recentFeeds = storedFeeds ? JSON.parse(storedFeeds) : {};
+
+const store = new Vuex.Store({
   state: {
     loading: false,
     selectedAccount: '',
-    recentFeeds: {},
+    recentFeeds,
   },
   getters: {
     sortedRecentFeeds(state) {
@@ -15,7 +19,7 @@ export default new Vuex.Store({
       const selectedAccountFeed = state.recentFeeds[state.selectedAccount];
       if (!selectedAccountFeed) return [];
       return selectedAccountFeed
-        .sort((a, b) => b.taken_at_timestamp - a.taken_at_timestamp);
+        .data.sort((a, b) => b.taken_at_timestamp - a.taken_at_timestamp);
     },
   },
   mutations: {
@@ -23,7 +27,8 @@ export default new Vuex.Store({
       state.selectedAccount = account;
     },
     setAccountFeed(state, { data }) {
-      state.recentFeeds = { ...state.recentFeeds, [state.selectedAccount]: data };
+      const lastFetched = new Date();
+      state.recentFeeds = { ...state.recentFeeds, [state.selectedAccount]: { lastFetched, data } };
     },
     loading(state) {
       state.loading = true;
@@ -40,14 +45,25 @@ export default new Vuex.Store({
         const response = await fetch(`https://www.instagram.com/${account}/?__a=1`);
         result = await response.json();
       } catch (err) {
-        console.log(err);
+        // eslint-disable-next-line no-alert
+        alert(err); // simplified error display
       }
       commit('noLoading');
       return result;
     },
     async fetchFeed({ commit, dispatch, state }, { account }) {
       commit('setSelectedAccount', { account });
-      if (!account || state.recentFeeds[account]) return;
+      let hasCache = false;
+      if (state.recentFeeds[account]) {
+        let { lastFetched } = state.recentFeeds[account];
+        // restore lastFetched date object from sting
+        if (typeof (lastFetched) === 'string') lastFetched = new Date(lastFetched);
+        const diff = (new Date() - lastFetched) / 1000 / 60;
+        const ttl = 60; // cache in minutes
+        if (diff < ttl) hasCache = true;
+      }
+
+      if (!account || hasCache) return;
       const result = await dispatch('request', { account });
       if (!result) return;
       const data = [
@@ -60,3 +76,11 @@ export default new Vuex.Store({
   modules: {
   },
 });
+
+store.subscribe((mutation, state) => {
+  if (mutation.type === 'setAccountFeed') {
+    sessionStorage.setItem('store.recentFeeds', JSON.stringify(state.recentFeeds));
+  }
+});
+
+export default store;
