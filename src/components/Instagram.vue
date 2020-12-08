@@ -44,7 +44,7 @@ export default {
         return this.sortedRecentFeeds;
       }
       return [...this.sortedRecentFeeds]
-        .filter((item) => (selected === 'video' ? item.node.is_video : !item.node.is_video));
+        .filter((item) => (selected === 'video' ? item.is_video : !item.is_video));
     },
     limited() {
       return this.filtered.slice(0, this.numberOfFeeds);
